@@ -80,3 +80,14 @@ void UART2_WriteChar(char c)
     /* Write character to transmit register */
     USART2_TDR = (uint8_t)c;
 }
+/*
+ * Transmit a null-terminated string
+ */
+void UART2_WriteString(const char *str)
+{
+    while (*str != '\0')
+    {
+        UART2_WriteChar(*str);
+        str++;
+    }
+}
