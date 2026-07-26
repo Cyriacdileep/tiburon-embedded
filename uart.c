@@ -69,3 +69,14 @@ void UART2_Init(void)
     /* Enable USART2 */
     USART2_CR1 |= UE;
 }
+/*
+ * Transmit a single character
+ */
+void UART2_WriteChar(char c)
+{
+    /* Wait until transmit data register is empty */
+    while (!(USART2_ISR & TXE));
+
+    /* Write character to transmit register */
+    USART2_TDR = (uint8_t)c;
+}
