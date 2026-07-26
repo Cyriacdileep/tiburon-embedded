@@ -91,3 +91,14 @@ void UART2_WriteString(const char *str)
         str++;
     }
 }
+/*
+ * Receive a single character
+ */
+char UART2_ReadChar(void)
+{
+    /* Wait until data is received */
+    while (!(USART2_ISR & RXNE));
+
+    /* Return received character */
+    return (char)USART2_RDR;
+}
