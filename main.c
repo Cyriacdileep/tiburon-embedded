@@ -1,19 +1,19 @@
-#include uart.h
+#include "uart.h"
 
 int main(void)
 {
-     Initialize UART2 
+    /* Initialize UART2 */
     UART2_Init();
 
-     Send startup message 
-    UART2_WriteString(UART Initializedrn);
+    /* Send startup message */
+    UART2_WriteString("UART Initialized\r\n");
 
     while (1)
     {
-         Read one character 
+        /* Read one character */
         char c = UART2_ReadChar();
 
-         Echo it back 
+        /* Echo it back */
         UART2_WriteChar(c);
     }
 }
