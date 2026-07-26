@@ -42,3 +42,56 @@
 
 #define RXNE            (1U << 5)
 #define TXE             (1U << 7)
+
+void UART2_Init(void)
+{
+    /*----------------------------------------------------------
+      Enable peripheral clocks
+    ----------------------------------------------------------*/
+
+    /* Enable GPIOA clock */
+    RCC_IOPENR |= GPIOAEN;
+
+    /* Enable USART2 clock */
+    RCC_APBENR1 |= USART2EN;
+
+    /*----------------------------------------------------------
+      Configure PA2 (TX) and PA3 (RX)
+      Alternate Function Mode
+    ----------------------------------------------------------*/
+
+    /* Clear current mode bits */
+    GPIOA_MODER &= ~(3U << (2 * 2));
+    GPIOA_MODER &= ~(3U << (3 * 2));
+
+    /* Set Alternate Function Mode (10) */
+    GPIOA_MODER |= (2U << (2 * 2));
+    GPIOA_MODER |= (2U << (3 * 2));
+
+    /*----------------------------------------------------------
+      Select Alternate Function AF1 for USART2
+    ----------------------------------------------------------*/
+
+    GPIOA_AFRL &= ~(0xFU << (2 * 4));
+    GPIOA_AFRL &= ~(0xFU << (3 * 4));
+
+    GPIOA_AFRL |= (1U << (2 * 4));
+    GPIOA_AFRL |= (1U << (3 * 4));
+
+    /*----------------------------------------------------------
+      Configure Baud Rate
+      Assuming 16 MHz system clock
+      Baud = 9600
+      BRR = 16000000 / 9600 ≈ 1667
+    ----------------------------------------------------------*/
+
+    USART2_BRR = 1667;
+
+    /*----------------------------------------------------------
+      Enable UART
+    ----------------------------------------------------------*/
+
+    USART2_CR1 |= TE;
+    USART2_CR1 |= RE;
+    USART2_CR1 |= UE;
+}
